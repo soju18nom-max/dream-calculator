@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DREAM ROBOT EARTH 계산기</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#20242a;--muted:#68707d;--line:#dfe4ea;--accent:#4263eb;--game:#151923}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:620px;margin:0 auto;padding:18px}.home h1{font-size:25px;margin:8px 0}.sub{color:var(--muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.menu{border:1px solid var(--line);background:#fff;border-radius:18px;padding:20px 12px;min-height:105px;font-size:17px;font-weight:700;cursor:pointer}.menu span{display:block;font-size:28px;margin-bottom:7px}
+.menu.game{background:var(--game);color:#fff;border-color:var(--game)}
+.panel{display:none}.panel.active{display:block}.head{display:flex;align-items:center;gap:10px;margin-bottom:16px}.back{border:0;background:#e9edf3;border-radius:12px;padding:11px 14px;font-weight:700;cursor:pointer}.title{font-size:22px;font-weight:800}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px}.game-card{background:#171b24;color:#fff;border-color:#2c3341}
+label{display:block;font-weight:700;margin:14px 0 7px}input{width:100%;font-size:18px;padding:14px;border:1px solid #cfd5dd;border-radius:12px;background:#fff;color:#111}
+button.calc{width:100%;border:0;border-radius:13px;padding:15px;margin-top:18px;font-size:17px;font-weight:800;background:var(--accent);color:#fff;cursor:pointer}.game-card button.calc{background:#5c7cfa}
+.result{margin-top:16px;padding:16px;border-radius:14px;background:#f0f3f7;line-height:1.7;font-size:16px}.game-card .result{background:#232936;color:#fff}
+.small{font-size:13px;color:var(--muted);margin-top:10px}.game-card .small{color:#aeb7c7}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:420px){.wrap{padding:13px}.grid{grid-template-columns:1fr 1fr}.menu{font-size:15px;padding:15px 8px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<section id="home" class="panel active home">
+<h1>DREAM ROBOT EARTH 계산기</h1>
+<div class="sub">파일은 하나입니다. 아래에서 필요한 계산기만 따로 실행하세요.</div>
+<div class="grid">
+<button class="menu game" data-open="game"><span>🎮</span>게임 계산기</button>
+<button class="menu" data-open="discount"><span>👕</span>할인 계산기</button>
+<button class="menu" data-open="compare"><span>🛒</span>가격 비교</button>
+<button class="menu" data-open="fuel"><span>⛽</span>주유비 계산기</button>
+</div>
+</section>
+
+<section id="game" class="panel">
+<div class="head"><button class="back">← 메뉴</button><div class="title">🎮 게임 강화 확률</div></div>
+<div class="card game-card">
+<label>1회 강화 성공 확률 (%)</label><input id="gRate" type="number" min="0" max="100" step="0.01" placeholder="예: 10">
+<label>도전 횟수</label><input id="gTry" type="number" min="1" step="1" placeholder="예: 10">
+<label>1회 도전 비용 (선택)</label><input id="gCost" type="number" min="0" step="1" placeholder="예: 500000">
+<button class="calc" id="gBtn">계산하기</button>
+<div class="result" id="gOut">확률과 도전 횟수를 입력하세요.</div>
+<div class="small">각 도전이 서로 독립이고 성공 확률이 동일하다고 가정합니다.</div>
+</div></section>
+
+<section id="discount" class="panel">
+<div class="head"><button class="back">← 메뉴</button><div class="title">👕 옷·상품 할인</div></div>
+<div class="card">
+<label>원래 가격 (원)</label><input id="dPrice" type="number" min="0" placeholder="예: 129000">
+<label>할인율 (%)</label><input id="dRate" type="number" min="0" max="100" step="0.1" placeholder="예: 30">
+<button class="calc" id="dBtn">할인가 계산</button>
+<div class="result" id="dOut">가격과 할인율을 입력하세요.</div>
+</div></section>
+
+<section id="compare" class="panel">
+<div class="head"><button class="back">← 메뉴</button><div class="title">🛒 가격 비교</div></div>
+<div class="card">
+<div class="row"><div><label>A 가격 (원)</label><input id="aPrice" type="number" min="0"><label>A 용량·수량</label><input id="aQty" type="number" min="0" step="0.01"></div>
+<div><label>B 가격 (원)</label><input id="bPrice" type="number" min="0"><label>B 용량·수량</label><input id="bQty" type="number" min="0" step="0.01"></div></div>
+<button class="calc" id="cBtn">가격 비교</button>
+<div class="result" id="cOut">두 상품의 가격과 용량·수량을 입력하세요.</div>
+<div class="small">두 상품은 같은 단위(g, ml, 개 등)로 입력하세요.</div>
+</div></section>
+
+<section id="fuel" class="panel">
+<div class="head"><button class="back">← 메뉴</button><div class="title">⛽ 주유비 계산기</div></div>
+<div class="card">
+<label>이동 거리 (km)</label><input id="fKm" type="number" min="0" step="0.1" placeholder="예: 300">
+<label>차량 연비 (km/L)</label><input id="fEff" type="number" min="0" step="0.1" placeholder="예: 12">
+<label>기름값 (원/L)</label><input id="fPrice" type="number" min="0" step="0.1" placeholder="예: 1750">
+<label>리터당 할인 (선택, 원)</label><input id="fDisc" type="number" min="0" step="1" placeholder="예: 100">
+<button class="calc" id="fBtn">주유비 계산</button>
+<div class="result" id="fOut">거리, 연비, 기름값을 입력하세요.</div>
+</div></section>
+</div>
+<script>
+const $=id=>document.getElementById(id), won=n=>Math.round(n).toLocaleString('ko-KR')+'원';
+function openPanel(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');history.replaceState(null,'','#'+id)}
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.open)));
+document.querySelectorAll('.back').forEach(b=>b.addEventListener('click',()=>openPanel('home')));
+function n(id){const v=Number($(id).value);return Number.isFinite(v)?v:NaN}
+$('gBtn').onclick=()=>{let p=n('gRate'),t=n('gTry'),c=n('gCost');if(!(p>=0&&p<=100&&t>=1)){ $('gOut').textContent='성공 확률(0~100)과 도전 횟수를 확인하세요.';return}let fail=Math.pow(1-p/100,t),success=1-fail,avg=p>0?100/p:null,s=`한 번 이상 성공할 확률: <b>${(success*100).toFixed(2)}%</b><br>전부 실패할 확률: ${(fail*100).toFixed(2)}%<br>평균 성공 시도 횟수: ${avg?avg.toFixed(2)+'회':'계산 불가'}`;if(c>=0&&$('gCost').value!=='')s+=`<br>최대 도전 비용: <b>${won(c*t)}</b>`;$('gOut').innerHTML=s};
+$('dBtn').onclick=()=>{let p=n('dPrice'),r=n('dRate');if(!(p>=0&&r>=0&&r<=100)){ $('dOut').textContent='가격과 할인율(0~100)을 확인하세요.';return}let save=p*r/100;$('dOut').innerHTML=`할인 금액: <b>${won(save)}</b><br>최종 가격: <b>${won(p-save)}</b>`};
+$('cBtn').onclick=()=>{let ap=n('aPrice'),aq=n('aQty'),bp=n('bPrice'),bq=n('bQty');if(!(ap>=0&&bp>=0&&aq>0&&bq>0)){ $('cOut').textContent='가격과 0보다 큰 용량·수량을 입력하세요.';return}let au=ap/aq,bu=bp/bq,cheap=au===bu?'단위당 가격이 같습니다.':au<bu?'A 상품이 더 저렴합니다.':'B 상품이 더 저렴합니다.';$('cOut').innerHTML=`A 단위당: ${won(au)}<br>B 단위당: ${won(bu)}<br><b>${cheap}</b>`};
+$('fBtn').onclick=()=>{let km=n('fKm'),eff=n('fEff'),price=n('fPrice'),disc=n('fDisc');if(!(km>=0&&eff>0&&price>=0)){ $('fOut').textContent='거리, 연비, 기름값을 확인하세요.';return}if(!Number.isFinite(disc)||disc<0)disc=0;disc=Math.min(disc,price);let liters=km/eff,normal=liters*price,sale=liters*(price-disc);$('fOut').innerHTML=`예상 사용량: <b>${liters.toFixed(1)}L</b><br>예상 주유비: <b>${won(normal)}</b>${disc>0?`<br>할인 적용 주유비: <b>${won(sale)}</b><br>예상 절약액: <b>${won(normal-sale)}</b>`:''}`};
+const first=location.hash.slice(1);if(['game','discount','compare','fuel'].includes(first))openPanel(first);
+</script>
+</body></html>
